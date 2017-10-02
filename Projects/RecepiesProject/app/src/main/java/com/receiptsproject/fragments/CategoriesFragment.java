@@ -1,4 +1,4 @@
-package com.receiptsproject;
+package com.receiptsproject.fragments;
 
 import android.app.Fragment;
 

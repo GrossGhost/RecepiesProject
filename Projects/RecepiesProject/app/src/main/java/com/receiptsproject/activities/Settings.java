@@ -1,7 +1,9 @@
-package com.receiptsproject;
+package com.receiptsproject.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.receiptsproject.R;
 
 public class Settings extends AppCompatActivity {
 
