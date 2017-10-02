@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">ReceiptsProject</string>
     <string name="action_settings">Settings</string>
+    <string name="wrong_password">WRONG PASSWORD</string>
+    <string name="enter_your_password">Enter your password</string>
 </resources>
