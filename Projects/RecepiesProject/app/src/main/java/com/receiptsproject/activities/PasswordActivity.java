@@ -23,13 +23,14 @@ public class PasswordActivity extends AppCompatActivity {
     private TextView wrongPassword;
     private Button accept;
     private Context context;
-    SharedPreferences sp = getSharedPreferences(SHARED_NAME, MODE_PRIVATE);
+    SharedPreferences sp ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password);
 
         context = this;
+        sp = getSharedPreferences(SHARED_NAME, MODE_PRIVATE);
 
         if (!sp.getBoolean(IS_PASSWORD_SET, false)){
             startActivity(new Intent(context, MainActivity.class));

@@ -3,7 +3,7 @@ package com.receiptsproject.objects;
 import io.realm.RealmObject;
 
 
-public class CetegoriesData extends RealmObject {
+public class CategoriesData extends RealmObject {
 
     private String name;
 

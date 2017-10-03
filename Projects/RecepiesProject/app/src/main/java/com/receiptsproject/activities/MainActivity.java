@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.receiptsproject.R;
+import com.receiptsproject.fragments.CategoriesFragment;
+
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +21,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Realm.init(getApplicationContext());
+
+        if (savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.categories_container, new CategoriesFragment())
+                    .commit();
+        }
 
     }
 
