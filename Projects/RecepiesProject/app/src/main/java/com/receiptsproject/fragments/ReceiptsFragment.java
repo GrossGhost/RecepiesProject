@@ -59,7 +59,7 @@ public class ReceiptsFragment extends Fragment {
     }
 
     private void addReceipt(Context context){
-
+        //todo File write
     }
 
     @Override

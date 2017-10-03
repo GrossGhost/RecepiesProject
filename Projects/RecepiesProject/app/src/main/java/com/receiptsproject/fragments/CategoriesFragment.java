@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.receiptsproject.R;
 import com.receiptsproject.adapters.CategoriesAdapter;
+import com.receiptsproject.dialogs.CategoriesDialogFragment;
 import com.receiptsproject.objects.CategoriesData;
 
 import io.realm.Realm;

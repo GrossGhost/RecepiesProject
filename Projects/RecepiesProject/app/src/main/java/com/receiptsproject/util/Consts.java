@@ -12,4 +12,7 @@ public class Consts {
     public static final String SET = "Set password";
     public static final String CHANGE = "Change password";
     public static final String DELETE = "Delete password";
+
+    //For writing files
+    public static final String FILE_NAME = "AwesomeFile";
 }

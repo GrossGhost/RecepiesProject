@@ -1,4 +1,4 @@
-package com.receiptsproject.fragments;
+package com.receiptsproject.dialogs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
