@@ -3,6 +3,7 @@ package com.receiptsproject.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +25,13 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
     private Realm realm;
     private RecyclerView recyclerView;
     private CategoriesAdapter adapter;
+    private DialogFragment dialogFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
+        dialogFragment = new CategoriesDialogFragment();
         adapter = new CategoriesAdapter(realm.where(CategoriesData.class).findAll());
     }
 
@@ -52,14 +55,8 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View view) {
 
-                CategoriesData newCategory = new CategoriesData();
-                newCategory.setName("newCategory");
+                dialogFragment.show(getFragmentManager(), "dialog");
 
-                realm.beginTransaction();
-                realm.insert(newCategory);
-                realm.commitTransaction();
-
-                adapter.notifyDataSetChanged();
             }
         });
 

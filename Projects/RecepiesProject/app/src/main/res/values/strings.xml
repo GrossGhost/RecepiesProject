@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="wrong_password">WRONG PASSWORD</string>
     <string name="enter_your_password">Enter your password</string>
+    <string name="new_category">New Category</string>
+    <string name="cancel">Cancel</string>
+    <string name="create">Create</string>
 </resources>
