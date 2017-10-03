@@ -1,7 +1,5 @@
 package com.receiptsproject.fragments;
 
-import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -25,12 +23,13 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
 
     private Realm realm;
     private RecyclerView recyclerView;
-    private Context context;
+    private CategoriesAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
+        adapter = new CategoriesAdapter(realm.where(CategoriesData.class).findAll());
     }
 
     @Nullable
@@ -45,9 +44,8 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        context = getActivity();
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new CategoriesAdapter(realm.where(CategoriesData.class).findAll()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
 
         FloatingActionButton fab = view.findViewById(R.id.categories_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +59,7 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
                 realm.insert(newCategory);
                 realm.commitTransaction();
 
+                adapter.notifyDataSetChanged();
             }
         });
 
