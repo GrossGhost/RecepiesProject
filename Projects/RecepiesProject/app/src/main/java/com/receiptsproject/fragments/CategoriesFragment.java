@@ -21,6 +21,8 @@ import io.realm.RealmResults;
 
 public class CategoriesFragment extends Fragment {
 
+    public static int lastItemDeleted = -1;
+
     private Realm realm;
     private RecyclerView recyclerView;
     private CategoriesAdapter adapter;
@@ -62,11 +64,11 @@ public class CategoriesFragment extends Fragment {
 
             @Override
             public void onLongItemClick(View view, int position) {
+                lastItemDeleted = position;
+
                 realm.beginTransaction();
                 data.get(position).deleteFromRealm();
                 realm.commitTransaction();
-
-                adapter.notifyItemRemoved(position);
             }
         }));
         FloatingActionButton fab = view.findViewById(R.id.categories_fab);
@@ -78,7 +80,6 @@ public class CategoriesFragment extends Fragment {
         });
 
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
