@@ -1,6 +1,9 @@
 package com.receiptsproject.fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -65,10 +68,8 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onLongItemClick(View view, int position) {
                 lastItemDeleted = position;
+                onCreateDialog().show();
 
-                realm.beginTransaction();
-                data.get(position).deleteFromRealm();
-                realm.commitTransaction();
             }
         }));
         FloatingActionButton fab = view.findViewById(R.id.categories_fab);
@@ -85,4 +86,27 @@ public class CategoriesFragment extends Fragment {
         super.onDestroy();
         realm.close();
     }
+
+    protected Dialog onCreateDialog(){
+        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+        adb.setTitle("Delete Category");
+        adb.setMessage("Are you sure wanna delete category '" + data.get(lastItemDeleted).getName() + "'");
+        adb.setPositiveButton("Delete", myClickListener);
+        adb.setNegativeButton("Cancel", myClickListener);
+        return adb.create();
+    }
+    DialogInterface.OnClickListener myClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            switch (i){
+                case Dialog.BUTTON_POSITIVE:
+                    realm.beginTransaction();
+                    data.get(lastItemDeleted).deleteFromRealm();
+                    realm.commitTransaction();
+                    break;
+                case Dialog.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
 }
