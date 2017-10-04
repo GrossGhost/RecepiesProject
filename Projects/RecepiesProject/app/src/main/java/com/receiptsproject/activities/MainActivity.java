@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(getApplicationContext());
 
         if (savedInstanceState == null){
-            getSupportFragmentManager()
+            getFragmentManager()
                     .beginTransaction()
                     .add(R.id.categories_container, new CategoriesFragment())
                     .commit();

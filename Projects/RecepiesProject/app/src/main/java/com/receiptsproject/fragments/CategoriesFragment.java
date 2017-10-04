@@ -1,9 +1,9 @@
 package com.receiptsproject.fragments;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,28 +12,28 @@ import android.view.ViewGroup;
 
 import com.receiptsproject.R;
 import com.receiptsproject.adapters.CategoriesAdapter;
-import com.receiptsproject.dialogs.CategoriesDialogFragment;
+import com.receiptsproject.dialogs.AddCategoriesDialog;
 import com.receiptsproject.objects.CategoriesData;
+import com.receiptsproject.util.RecyclerItemClickListener;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
-public class CategoriesFragment extends android.support.v4.app.Fragment {
-    //todo create layout
-    //todo adding new categories
-    //todo deleting categories
-    //todo add transition on ReceiptsFragment
+public class CategoriesFragment extends Fragment {
 
     private Realm realm;
     private RecyclerView recyclerView;
     private CategoriesAdapter adapter;
-    private DialogFragment dialogFragment;
+    private android.app.DialogFragment dialogFragment;
+    private RealmResults<CategoriesData> data;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
-        dialogFragment = new CategoriesDialogFragment();
-        adapter = new CategoriesAdapter(realm.where(CategoriesData.class).findAll());
+        dialogFragment = new AddCategoriesDialog();
+        data = realm.where(CategoriesData.class).findAll();
+        adapter = new CategoriesAdapter(data);
     }
 
     @Nullable
@@ -50,14 +50,30 @@ public class CategoriesFragment extends android.support.v4.app.Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Fragment receiptsFragment = new ReceiptsFragment();
+                android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.categories_container, receiptsFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
 
+            @Override
+            public void onLongItemClick(View view, int position) {
+                realm.beginTransaction();
+                data.get(position).deleteFromRealm();
+                realm.commitTransaction();
+
+                adapter.notifyItemRemoved(position);
+            }
+        }));
         FloatingActionButton fab = view.findViewById(R.id.categories_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 dialogFragment.show(getFragmentManager(), "dialog");
-
             }
         });
 

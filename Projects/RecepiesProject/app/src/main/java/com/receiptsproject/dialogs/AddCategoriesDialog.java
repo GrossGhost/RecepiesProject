@@ -2,7 +2,6 @@ package com.receiptsproject.dialogs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import com.receiptsproject.objects.CategoriesData;
 import io.realm.Realm;
 
 
-public class CategoriesDialogFragment extends DialogFragment implements View.OnClickListener {
+public class AddCategoriesDialog extends android.app.DialogFragment implements View.OnClickListener {
 
     private EditText editCategoryText;
     private Realm realm;
@@ -43,7 +42,7 @@ public class CategoriesDialogFragment extends DialogFragment implements View.OnC
             case R.id.button_add_category :
                 String newCategoryName = editCategoryText.getText().toString();
                 if (newCategoryName.equals(""))
-                    Toast.makeText(getContext(),"Enter Category name!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Enter Category name!", Toast.LENGTH_SHORT).show();
                 else{
                     CategoriesData newCategory = new CategoriesData();
                     newCategory.setName(newCategoryName);
