@@ -1,6 +1,8 @@
 package com.receiptsproject.util;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Consts {
 
@@ -19,6 +21,6 @@ public class Consts {
     public static final String FILE_NAME = "AwesomeFile";
 
     //For Categories
-    public static final String [] CATEGORIES_LIST = {"Documents","Grocery bills",
-            "Restaurant bills","Electronic items"};
+    public static final ArrayList<String> CATEGORIES_LIST = new ArrayList<>(Arrays.asList(
+            "Documents","Grocery bills","Restaurant bills","Electronic items"));
 }

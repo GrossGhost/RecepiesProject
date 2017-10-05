@@ -1,12 +1,10 @@
 package com.receiptsproject.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
@@ -46,7 +44,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
     public void onChange(Object o) {
 
         if (preChangeItemCount < getItemCount()){
-            notifyItemInserted(getItemCount());
+            notifyDataSetChanged();
         } else
             notifyItemRemoved(CategoriesFragment.lastItemDeleted);
 

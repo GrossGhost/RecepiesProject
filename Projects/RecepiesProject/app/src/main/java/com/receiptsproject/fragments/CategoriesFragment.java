@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.receiptsproject.R;
 import com.receiptsproject.adapters.CategoriesAdapter;
@@ -19,6 +21,9 @@ import com.receiptsproject.dialogs.AddCategoriesDialog;
 import com.receiptsproject.objects.CategoriesData;
 import com.receiptsproject.util.Consts;
 import com.receiptsproject.util.RecyclerItemClickListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -32,19 +37,21 @@ public class CategoriesFragment extends Fragment {
     private CategoriesAdapter adapter;
     private android.app.DialogFragment dialogFragment;
     private RealmResults<CategoriesData> data;
+    private String lastCategoryDeleted = "";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
         dialogFragment = new AddCategoriesDialog();
-        data = realm.where(CategoriesData.class).findAll();
+        data = realm.where(CategoriesData.class).findAll().sort("name");
         checkRealmData();
         adapter = new CategoriesAdapter(data);
     }
 
     private void checkRealmData() {
-        if (! data.get(0).getName().equals(Consts.CATEGORIES_LIST[0]) ){
+        if (! data.get(0).getName().equals(Consts.CATEGORIES_LIST.get(0)) ){
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
@@ -84,8 +91,15 @@ public class CategoriesFragment extends Fragment {
 
             @Override
             public void onLongItemClick(View view, int position) {
+
                 lastItemDeleted = position;
-                onCreateDialog().show();
+                TextView categoryText = view.findViewById(R.id.item_category_title);
+                lastCategoryDeleted = categoryText.getText().toString();
+
+                if (!Consts.CATEGORIES_LIST.contains(lastCategoryDeleted))
+                    onCreateDialog().show();
+                else
+                    Toast.makeText(getActivity(),"Cant delete this category", Toast.LENGTH_SHORT).show();
 
             }
         }));
@@ -107,7 +121,7 @@ public class CategoriesFragment extends Fragment {
     protected Dialog onCreateDialog(){
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
         adb.setTitle("Delete Category");
-        adb.setMessage("Are you sure wanna delete category '" + data.get(lastItemDeleted).getName() + "'");
+        adb.setMessage("Are you sure wanna delete category '" + lastCategoryDeleted + "'");
         adb.setPositiveButton("Delete", myClickListener);
         adb.setNegativeButton("Cancel", myClickListener);
         return adb.create();
@@ -118,7 +132,7 @@ public class CategoriesFragment extends Fragment {
             switch (i){
                 case Dialog.BUTTON_POSITIVE:
                     realm.beginTransaction();
-                    data.get(lastItemDeleted).deleteFromRealm();
+                    realm.where(CategoriesData.class).contains("name",lastCategoryDeleted).findFirst().deleteFromRealm();
                     realm.commitTransaction();
                     break;
                 case Dialog.BUTTON_NEGATIVE:
