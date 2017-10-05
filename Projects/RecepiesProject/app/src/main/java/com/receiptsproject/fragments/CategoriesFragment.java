@@ -17,6 +17,7 @@ import com.receiptsproject.R;
 import com.receiptsproject.adapters.CategoriesAdapter;
 import com.receiptsproject.dialogs.AddCategoriesDialog;
 import com.receiptsproject.objects.CategoriesData;
+import com.receiptsproject.util.Consts;
 import com.receiptsproject.util.RecyclerItemClickListener;
 
 import io.realm.Realm;
@@ -38,7 +39,23 @@ public class CategoriesFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         dialogFragment = new AddCategoriesDialog();
         data = realm.where(CategoriesData.class).findAll();
+        checkRealmData();
         adapter = new CategoriesAdapter(data);
+    }
+
+    private void checkRealmData() {
+        if (! data.get(0).getName().equals(Consts.CATEGORIES_LIST[0]) ){
+            realm.beginTransaction();
+            realm.deleteAll();
+            realm.commitTransaction();
+            for (String category : Consts.CATEGORIES_LIST){
+                CategoriesData basicCategory = new CategoriesData();
+                basicCategory.setName(category);
+                realm.beginTransaction();
+                realm.insert(basicCategory);
+                realm.commitTransaction();
+            }
+        }
     }
 
     @Nullable

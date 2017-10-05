@@ -1,5 +1,7 @@
 package com.receiptsproject.util;
 
+import java.util.ArrayList;
+
 public class Consts {
 
     //For SharedPreferences
@@ -15,4 +17,8 @@ public class Consts {
 
     //For writing files
     public static final String FILE_NAME = "AwesomeFile";
+
+    //For Categories
+    public static final String [] CATEGORIES_LIST = {"Documents","Grocery bills",
+            "Restaurant bills","Electronic items"};
 }
