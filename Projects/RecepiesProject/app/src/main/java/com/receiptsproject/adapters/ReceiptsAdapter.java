@@ -1,6 +1,5 @@
 package com.receiptsproject.adapters;
 
-
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +12,7 @@ import android.widget.Toast;
 
 import com.receiptsproject.R;
 import com.receiptsproject.objects.ReceiptItemObject;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,6 +20,11 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
 
     private Context context;
     private List<ReceiptItemObject> receipts;
+
+    public ReceiptsAdapter(Context context, List<ReceiptItemObject> receipts) {
+        this.context = context;
+        this.receipts = receipts;
+    }
 
     @Override
     public ReceiptsAdapter.MyAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,7 +35,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, int position) {
         holder.title.setText(receipts.get(position).getTitle());
         holder.category.setText(receipts.get(position).getCategory());
-        //holder.photo.setImageResource();
+        Picasso.with(context).load(receipts.get(position).getImage()).into(holder.photo);
 
         holder.itemCardView.setOnClickListener(new View.OnClickListener() {
             @Override

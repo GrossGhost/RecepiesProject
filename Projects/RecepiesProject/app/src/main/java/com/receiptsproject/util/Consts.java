@@ -19,6 +19,7 @@ public class Consts {
 
     //For writing files
     public static final String FILE_NAME = "AwesomeFile";
+    public static final int TAKE_PICTURE = 1;
 
     //For Categories
     public static final ArrayList<String> CATEGORIES_LIST = new ArrayList<>(Arrays.asList(

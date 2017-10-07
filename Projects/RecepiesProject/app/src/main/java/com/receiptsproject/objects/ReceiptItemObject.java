@@ -1,11 +1,15 @@
 package com.receiptsproject.objects;
 
-public class ReceiptItemObject {
+import android.net.Uri;
+
+import io.realm.RealmObject;
+
+public class ReceiptItemObject extends RealmObject{
     private String title;
     private String category;
-    private String image;
+    private Uri image;
 
-    public ReceiptItemObject(String title, String category, String image) {
+    public ReceiptItemObject(String title, String category, Uri image) {
         this.title = title;
         this.category = category;
         this.image = image;
@@ -27,11 +31,11 @@ public class ReceiptItemObject {
         this.category = category;
     }
 
-    public String getImage() {
+    public Uri getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Uri image) {
         this.image = image;
     }
 }
