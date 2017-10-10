@@ -22,9 +22,6 @@ import com.receiptsproject.objects.CategoriesData;
 import com.receiptsproject.util.Consts;
 import com.receiptsproject.util.RecyclerItemClickListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 
