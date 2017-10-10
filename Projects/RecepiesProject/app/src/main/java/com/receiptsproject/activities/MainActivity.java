@@ -6,12 +6,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cloudrail.si.CloudRail;
+import com.receiptsproject.LoginToDropboxAsyncTask;
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
+import com.receiptsproject.util.Consts;
 
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     //todo starting with CategoriesFragment
 
@@ -30,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.categories_container, new CategoriesFragment())
                     .commit();
         }
+
+        CloudRail.setAppKey(Consts.APP_SECRET_CLOUDRAIL);
+        CloudRail.setAdvancedAuthenticationMode(true);
+        LoginToDropboxAsyncTask task = new LoginToDropboxAsyncTask(this.getApplicationContext());
+
+        task.execute();
 
     }
 

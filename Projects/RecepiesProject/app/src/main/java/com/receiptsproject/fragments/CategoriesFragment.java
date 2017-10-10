@@ -48,7 +48,7 @@ public class CategoriesFragment extends Fragment {
     }
 
     private void checkRealmData() {
-        if (! data.get(0).getName().equals(Consts.CATEGORIES_LIST.get(0)) ){
+        if (data.size() == 0 || ! data.get(0).getName().equals(Consts.CATEGORIES_LIST.get(0)) ){
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
