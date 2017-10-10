@@ -7,12 +7,16 @@ import io.realm.RealmObject;
 public class ReceiptItemObject extends RealmObject{
     private String title;
     private String category;
-    private Uri image;
+    private String image;
+
+    public ReceiptItemObject() {
+
+    }
 
     public ReceiptItemObject(String title, String category, Uri image) {
         this.title = title;
         this.category = category;
-        this.image = image;
+        this.image = image.toString();
     }
 
     public String getTitle() {
@@ -31,11 +35,11 @@ public class ReceiptItemObject extends RealmObject{
         this.category = category;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
     public void setImage(Uri image) {
-        this.image = image;
+        this.image = image.toString();
     }
 }
