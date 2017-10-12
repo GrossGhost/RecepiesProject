@@ -6,4 +6,10 @@
     <string name="new_category">New Category</string>
     <string name="cancel">Cancel</string>
     <string name="create">Create</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="not_logged_in">not logged in</string>
+    <string name="logged_in_as">logged in as </string>
+    <string name="dropbox">Dropbox</string>
+    <string name="conti_nue">Continue</string>
 </resources>

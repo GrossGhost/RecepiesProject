@@ -1,16 +1,14 @@
 package com.receiptsproject.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.cloudrail.si.CloudRail;
-import com.receiptsproject.LoginToDropboxAsyncTask;
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
-import com.receiptsproject.util.Consts;
 
 import io.realm.Realm;
 
@@ -36,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        CloudRail.setAppKey(Consts.APP_SECRET_CLOUDRAIL);
-        CloudRail.setAdvancedAuthenticationMode(true);
-        LoginToDropboxAsyncTask task = new LoginToDropboxAsyncTask(this.getApplicationContext());
-
-        task.execute();
-
     }
 
     @Override
@@ -60,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_dropbox) {
+            startActivity(new Intent(getApplicationContext(), DropboxLoginActivity.class));
             return true;
         }
 
