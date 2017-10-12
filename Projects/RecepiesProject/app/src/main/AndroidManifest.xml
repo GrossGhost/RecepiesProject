@@ -36,12 +36,14 @@
         </activity>
         <activity android:name=".activities.SettingsPasswords" />
         <activity android:name=".activities.AddReceiptActivity" />
+
         <activity android:name=".activities.DropboxLoginActivity">
             <intent-filter>
+                <data android:host="www.cloudrailauth.com" android:scheme="https" android:path="/auth" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="auth.cloudrail.com" android:scheme="https" android:path="/com.receiptsproject" />
+
             </intent-filter>
         </activity>
     </application>

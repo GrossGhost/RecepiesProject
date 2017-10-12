@@ -29,4 +29,5 @@ public class Consts {
     public static final String APP_KEY_DROPBOX = "5g4xzheb9woqp1x";
     public static final String APP_SECRET = "h2wgoqvmkvsdv59";
     public static final String APP_SECRET_CLOUDRAIL = "59dcccaec8b6755b44690655";
+    public static final String DROPBOX_PREF = "Dropbox preferences";
 }
