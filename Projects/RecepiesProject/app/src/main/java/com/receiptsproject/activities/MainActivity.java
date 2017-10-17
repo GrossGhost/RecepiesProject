@@ -7,10 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
 
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Realm.init(getApplicationContext());
+        try{
+            DropboxManager.getInstance().prepare(this);
+        }catch (Exception e){
+
+        }
 
         if (savedInstanceState == null){
             getFragmentManager()

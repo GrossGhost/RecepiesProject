@@ -46,7 +46,7 @@ public class DropboxManager {
         CloudRail.setAdvancedAuthenticationMode(true);
         this.initDropbox();
 
-        SharedPreferences sharedPreferences = context.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Consts.DROPBOX_PREF,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         String persistent = sharedPreferences.getString(AUTH_DATA, null);
