@@ -25,11 +25,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        try{
-            DropboxManager.getInstance().prepare(this);
-        }catch (Exception e){
+        DropboxManager.getInstance().prepare(this);
 
-        }
 
         if (savedInstanceState == null){
             getFragmentManager()

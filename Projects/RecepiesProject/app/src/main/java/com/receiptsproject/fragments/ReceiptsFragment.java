@@ -25,6 +25,10 @@ public class ReceiptsFragment extends Fragment {
     private final String TAG = "ReceiptsFragment/";
     private Context context;
     private List<ReceiptItemObject> receipts = new ArrayList<>();
+
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

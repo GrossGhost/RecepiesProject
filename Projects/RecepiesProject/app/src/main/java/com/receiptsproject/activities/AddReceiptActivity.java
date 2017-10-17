@@ -47,6 +47,7 @@ public class AddReceiptActivity extends AppCompatActivity {
     private Activity activity;
     private Realm realm;
     private boolean wasClicked = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,8 @@ public class AddReceiptActivity extends AppCompatActivity {
         save = (Button) findViewById(R.id.button);
         title = (EditText) findViewById(R.id.title);
         categories = (Spinner) findViewById(R.id.spinner);
+
+
 
         if (mOutputFileUri != null){
             Picasso.with(context).load(mOutputFileUri).into(photo);
@@ -90,7 +93,8 @@ public class AddReceiptActivity extends AppCompatActivity {
                     && grantResults[1] == RESULT_OK){
                 saveFullImage(
                         title.getText().toString(),
-                        categories.getSelectedItem().toString()
+                        "Documents"
+                        //categories.getSelectedItem().toString()
                 );
             }
         }
@@ -102,12 +106,12 @@ public class AddReceiptActivity extends AppCompatActivity {
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)  == PackageManager.PERMISSION_GRANTED){
             if (
                     !title.getText().toString().equals(null)
-                            ||
-                            !categories.getSelectedItem().toString().equals(null)
+                            //|| !categories.getSelectedItem().toString().equals(null)
                     ){
                 saveFullImage(
                         title.getText().toString(),
-                        categories.getSelectedItem().toString()
+                        "Documents"
+                        //categories.getSelectedItem().toString()
                 );
             }
         }else {
