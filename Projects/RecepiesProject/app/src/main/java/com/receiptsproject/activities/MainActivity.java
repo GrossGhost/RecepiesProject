@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
@@ -15,9 +16,6 @@ import com.receiptsproject.fragments.CategoriesFragment;
 public class MainActivity extends AppCompatActivity {
 
 
-
-    //todo starting with CategoriesFragment
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +23,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DropboxManager.getInstance().prepare(this);
+        try {
+            DropboxManager.getInstance().prepare(this);
+        }catch (Exception e){
+            Toast.makeText(this, "Cant login to dropbox", Toast.LENGTH_LONG).show();
+        }
 
 
         if (savedInstanceState == null){
