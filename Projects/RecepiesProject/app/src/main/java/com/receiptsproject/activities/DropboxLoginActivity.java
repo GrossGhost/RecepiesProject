@@ -15,7 +15,8 @@ import android.widget.Toast;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
-import com.receiptsproject.objects.ReceiptItemObject;
+import com.receiptsproject.UploadService;
+import com.receiptsproject.util.Consts;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -24,8 +25,8 @@ import java.io.InputStream;
 public class DropboxLoginActivity extends AppCompatActivity {
 
     private TextView dropboxStatus;
-    private ReceiptItemObject test;
     private Uri testUri;
+    private String strUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,11 @@ public class DropboxLoginActivity extends AppCompatActivity {
         dropboxTest.setOnClickListener(new StartTest());
 
         Resources resources = getResources();
-        testUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(R.drawable.test));
-        test = new ReceiptItemObject("Test", "Category", testUri);
-
-
-
+        strUri = "android.resource://com.receiptsproject/" + R.drawable.test;
+        testUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
+                resources.getResourcePackageName(R.drawable.test) + '/' +
+                resources.getResourceTypeName(R.drawable.test) + '/' +
+                resources.getResourceEntryName(R.drawable.test) );
     }
 
     @Override
@@ -63,34 +64,19 @@ public class DropboxLoginActivity extends AppCompatActivity {
         String s;
         @Override
         public void onClick(View view) {
+
+            Intent uploadServiceIntent = new Intent(getApplicationContext(), UploadService.class);
+            uploadServiceIntent.putExtra(Consts.CATEGORY, "final_test");
+            uploadServiceIntent.putExtra(Consts.NAME, "final_name");
+            uploadServiceIntent.putExtra(Consts.URI, strUri);
+
+
+            startService(uploadServiceIntent);
+
             new Thread() {
                 @Override
                 public void run() {
                     s = getDropbox().getUserLogin();
-
-                    InputStream fs = null;
-                    long size = -1;
-                    try {
-                        //fs = getContentResolver().openInputStream(testUri);
-                        fs = getApplicationContext().getResources().openRawResource(+ R.drawable.test);
-                        size = getContentResolver().openAssetFileDescriptor(testUri, "r").getLength();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    //getDropbox().upload("/myFolder/myFile.jpg", fs, 1024L, true);
-                    try{
-                        getDropbox().createFolder("/test");
-                    } catch (Exception e){
-
-                    }
-                    try{
-                        getDropbox().upload("/test/myFile.jpg", fs, 1024L, true);
-                    } catch (Exception e){
-
-                    }
-
-
                 }
 
             }.start();

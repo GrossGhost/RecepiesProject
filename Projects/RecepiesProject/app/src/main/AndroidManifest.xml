@@ -56,9 +56,12 @@
         <activity android:name=".activities.SettingsPasswords" />
         <activity android:name=".activities.AddReceiptActivity" />
 
-        <activity android:name=".activities.DropboxLoginActivity">
+        <activity android:name=".activities.DropboxLoginActivity"/>
 
-        </activity>
+        <service
+            android:name=".UploadService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

@@ -30,4 +30,9 @@ public class Consts {
     public static final String APP_SECRET = "h2wgoqvmkvsdv59";
     public static final String APP_SECRET_CLOUDRAIL = "59dcccaec8b6755b44690655";
     public static final String DROPBOX_PREF = "Dropbox preferences";
+
+    //For UploadService
+    public static final String CATEGORY = "category";
+    public static final String NAME = "name";
+    public static final String URI = "uri";
 }
