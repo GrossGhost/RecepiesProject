@@ -2,6 +2,7 @@ package com.receiptsproject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -52,7 +53,7 @@ public class UploadService extends Service {
             folder = "/" + category;
             path = folder + "/" + name + ".jpg";
             // test uri
-            stream = getApplicationContext().getResources().openRawResource(+ R.drawable.test);
+            stream = getContentResolver().openInputStream(Uri.parse(uri));
             size = 1024L;
 
         }

@@ -15,10 +15,6 @@ import com.receiptsproject.fragments.CategoriesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-    //todo starting with CategoriesFragment
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
