@@ -79,7 +79,13 @@ public class CategoriesFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+
+                Bundle bundle = new Bundle();
+                TextView categoryText = view.findViewById(R.id.item_category_title);
+                bundle.putString("category", categoryText.getText().toString());
+
                 Fragment receiptsFragment = new ReceiptsFragment();
+                receiptsFragment.setArguments(bundle);
                 android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.categories_container, receiptsFragment);
                 transaction.addToBackStack(null);

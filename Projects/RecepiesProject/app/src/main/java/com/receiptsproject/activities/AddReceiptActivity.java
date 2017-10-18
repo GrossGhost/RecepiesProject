@@ -13,11 +13,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import com.receiptsproject.R;
 import com.receiptsproject.objects.ReceiptItemObject;
@@ -31,34 +31,33 @@ import static com.receiptsproject.util.Consts.TAKE_PICTURE;
 
 public class AddReceiptActivity extends AppCompatActivity {
 
+    private String TAG = "ADDRECEIPT";
     private String[] permissions = new String[] {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE };
     private ImageView photo;
     private Button save;
     private EditText title;
-    private Spinner categories;
     private static int REQUEST_CODE = 10;
     private Uri mOutputFileUri;
     private String filename;
-    private String category;
     private Context context;
     private Activity activity;
     private Realm realm;
     private boolean wasClicked = false;
 
+    private String category;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_receite);
 
+        Intent intent = getIntent();
+        category = intent.getStringExtra("category");
         photo = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.button);
         title = (EditText) findViewById(R.id.title);
-        categories = (Spinner) findViewById(R.id.spinner);
-
-
 
         if (mOutputFileUri != null){
             Picasso.with(context).load(mOutputFileUri).into(photo);
@@ -76,6 +75,7 @@ public class AddReceiptActivity extends AppCompatActivity {
                 if (!wasClicked) {
                     takePhoto();
                     wasClicked = true;
+                    save.setText("Save");
                 }
                 else {
                     writeData(filename, category, mOutputFileUri);
@@ -92,9 +92,7 @@ public class AddReceiptActivity extends AppCompatActivity {
             if (grantResults[0] == RESULT_OK
                     && grantResults[1] == RESULT_OK){
                 saveFullImage(
-                        title.getText().toString(),
-                        "Documents"
-                        //categories.getSelectedItem().toString()
+                        title.getText().toString()
                 );
             }
         }
@@ -102,27 +100,25 @@ public class AddReceiptActivity extends AppCompatActivity {
 
 
     private void takePhoto(){
+        Log.d(TAG, "take photo");
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)  == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)  == PackageManager.PERMISSION_GRANTED){
             if (
                     !title.getText().toString().equals(null)
-                            //|| !categories.getSelectedItem().toString().equals(null)
                     ){
                 saveFullImage(
-                        title.getText().toString(),
-                        "Documents"
-                        //categories.getSelectedItem().toString()
+                        title.getText().toString()
                 );
             }
         }else {
             ActivityCompat.requestPermissions(
-                    activity,
+                    this,
                     permissions,
                     REQUEST_CODE);
         }
     }
-    private void saveFullImage(String title, String category) {
-        this.category = category;
+    private void saveFullImage(String title) {
+        Log.d(TAG, "saveFullImage");
         this.filename = title;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(), String.valueOf(filename));
@@ -141,8 +137,9 @@ public class AddReceiptActivity extends AppCompatActivity {
         }
     }
 
-    private void writeData(String title, String category, Uri image){
+    private void writeData(String title, String category, Uri img){
         realm.beginTransaction();
+        String image = String.valueOf(img);
         ReceiptItemObject receipt = new ReceiptItemObject(title, category, image);
         realm.insert(receipt);
         realm.commitTransaction();

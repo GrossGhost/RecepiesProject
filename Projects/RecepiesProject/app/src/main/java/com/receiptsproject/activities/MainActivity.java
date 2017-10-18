@@ -16,6 +16,9 @@ import com.receiptsproject.fragments.CategoriesFragment;
 public class MainActivity extends AppCompatActivity {
 
 
+
+    //todo starting with CategoriesFragment
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast.makeText(this, "Cant login to dropbox", Toast.LENGTH_LONG).show();
         }
-
 
         if (savedInstanceState == null){
             getFragmentManager()

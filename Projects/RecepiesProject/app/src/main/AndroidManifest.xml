@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+        android:name="android.hardware.camera" />
 
     <application
         android:name=".BillsApp"
@@ -19,28 +19,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <data
                     android:host="www.cloudrailauth.com"
                     android:path="/auth"
                     android:scheme="https" />
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-
             </intent-filter>
-
         </activity>
-
-
         <activity android:name=".activities.Settings" />
         <activity
             android:name=".activities.PasswordActivity"
@@ -51,12 +45,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".activities.SettingsPasswords" />
         <activity android:name=".activities.AddReceiptActivity" />
-
-        <activity android:name=".activities.DropboxLoginActivity"/>
+        <activity android:name=".activities.DropboxLoginActivity" />
+        <activity android:name=".activities.FullPhoto"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
             android:name=".UploadService"

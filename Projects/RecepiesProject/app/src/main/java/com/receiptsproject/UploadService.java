@@ -31,7 +31,7 @@ public class UploadService extends Service {
                     intent.getStringExtra(Consts.CATEGORY),
                     intent.getStringExtra(Consts.NAME),
                     intent.getStringExtra(Consts.URI)
-                    ).execute();
+            ).execute();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

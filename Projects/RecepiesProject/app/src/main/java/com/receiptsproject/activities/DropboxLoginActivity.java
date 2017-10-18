@@ -16,6 +16,7 @@ import com.cloudrail.si.interfaces.CloudStorage;
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
 import com.receiptsproject.UploadService;
+import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.util.Consts;
 
 import java.io.FileNotFoundException;
@@ -25,7 +26,6 @@ import java.io.InputStream;
 public class DropboxLoginActivity extends AppCompatActivity {
 
     private TextView dropboxStatus;
-    private Uri testUri;
     private String strUri;
 
     @Override
@@ -40,10 +40,6 @@ public class DropboxLoginActivity extends AppCompatActivity {
 
         Resources resources = getResources();
         strUri = "android.resource://com.receiptsproject/" + R.drawable.test;
-        testUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                resources.getResourcePackageName(R.drawable.test) + '/' +
-                resources.getResourceTypeName(R.drawable.test) + '/' +
-                resources.getResourceEntryName(R.drawable.test) );
     }
 
     @Override
@@ -61,33 +57,28 @@ public class DropboxLoginActivity extends AppCompatActivity {
     }
 
     private class StartTest implements View.OnClickListener{
-        String s;
+
         @Override
         public void onClick(View view) {
 
             Intent uploadServiceIntent = new Intent(getApplicationContext(), UploadService.class);
-            uploadServiceIntent.putExtra(Consts.CATEGORY, "final_test");
-            uploadServiceIntent.putExtra(Consts.NAME, "final_name");
+            uploadServiceIntent.putExtra(Consts.CATEGORY, "1fin_test1");
+            uploadServiceIntent.putExtra(Consts.NAME, "1fin_name1");
             uploadServiceIntent.putExtra(Consts.URI, strUri);
-
 
             startService(uploadServiceIntent);
 
-            new Thread() {
-                @Override
-                public void run() {
-                    s = getDropbox().getUserLogin();
-                }
-
-            }.start();
-            Toast.makeText(getApplicationContext(),s + " ",Toast.LENGTH_SHORT).show();
         }
     }
 
     private class GetUserName extends AsyncTask<Void, Void, String>{
         @Override
         protected String doInBackground(Void... params) {
-            return getDropbox().getUserName();
+            try {
+                return getDropbox().getUserName();
+            }catch (Exception e){
+                return "";
+            }
         }
 
         @Override

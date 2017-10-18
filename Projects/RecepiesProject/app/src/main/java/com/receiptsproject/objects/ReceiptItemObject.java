@@ -13,10 +13,10 @@ public class ReceiptItemObject extends RealmObject{
 
     }
 
-    public ReceiptItemObject(String title, String category, Uri image) {
+    public ReceiptItemObject(String title, String category, String image) {
         this.title = title;
         this.category = category;
-        this.image = image.toString();
+        this.image = image;
     }
 
     public String getTitle() {

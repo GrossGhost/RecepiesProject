@@ -1,27 +1,32 @@
 package com.receiptsproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.receiptsproject.R;
+import com.receiptsproject.UploadService;
+import com.receiptsproject.activities.FullPhoto;
 import com.receiptsproject.objects.ReceiptItemObject;
+import com.receiptsproject.util.Consts;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdapter>{
 
     private Context context;
-    private List<ReceiptItemObject> receipts;
+    private RealmResults<ReceiptItemObject> receipts;
 
-    public ReceiptsAdapter(Context context, List<ReceiptItemObject> receipts) {
+    public ReceiptsAdapter(Context context, RealmResults<ReceiptItemObject> receipts) {
         this.context = context;
         this.receipts = receipts;
     }
@@ -32,7 +37,8 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     }
 
     @Override
-    public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, int position) {
+    public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, final int position) {
+        final int pos = position;
         holder.title.setText(receipts.get(position).getTitle());
         holder.category.setText(receipts.get(position).getCategory());
         Picasso.with(context).load(receipts.get(position).getImage()).into(holder.photo);
@@ -40,9 +46,39 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
         holder.itemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "FULL PHOTO", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, FullPhoto.class);
+                intent.putExtra("photo", receipts.get(pos).getImage());
+                context.startActivity(intent);
             }
         });
+        holder.itemCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.where(ReceiptItemObject.class).contains("image", receipts.get(pos).getImage()).findAll().deleteFirstFromRealm();
+                    }
+                });
+                notifyDataSetChanged();
+                return false;
+            }
+        });
+
+        holder.uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent uploadServiceIntent = new Intent(context, UploadService.class);
+                uploadServiceIntent.putExtra(Consts.CATEGORY, receipts.get(position).getCategory());
+                uploadServiceIntent.putExtra(Consts.NAME, receipts.get(position).getTitle());
+                uploadServiceIntent.putExtra(Consts.URI, receipts.get(position).getImage());
+
+                context.startService(uploadServiceIntent);
+            }
+        });
+
     }
 
     @Override
@@ -55,6 +91,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
         private TextView title;
         private TextView category;
         private CardView itemCardView;
+        private ImageButton uploadButton;
         public MyAdapter(View itemView) {
             super(itemView);
 
@@ -62,6 +99,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
             title = (TextView)itemView.findViewById(R.id.item_title);
             category = (TextView)itemView.findViewById(R.id.item_category);
             itemCardView = (CardView)itemView.findViewById(R.id.receipt_card_view);
+            uploadButton = itemView.findViewById(R.id.button_upload);
         }
     }
 }
