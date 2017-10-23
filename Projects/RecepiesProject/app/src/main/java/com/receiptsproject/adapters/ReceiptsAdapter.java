@@ -2,6 +2,7 @@ package com.receiptsproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import com.receiptsproject.activities.FullPhoto;
 import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.util.Consts;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -38,17 +41,20 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
 
     @Override
     public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, final int position) {
-        final int pos = position;
+
         holder.title.setText(receipts.get(position).getTitle());
         holder.category.setText(receipts.get(position).getCategory());
-        Picasso.with(context).load(receipts.get(position).getImage()).into(holder.photo);
+        File photo = new File(receipts.get(position).getImage());
+        Picasso.with(context).load(photo)
+                .resize(150, 150)
+                .into(holder.photo);
 
         holder.itemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FullPhoto.class);
-                intent.putExtra("photo", receipts.get(pos).getImage());
-                context.startActivity(intent);
+                intent.putExtra("photo", receipts.get(position).getImage());
+                //context.startActivity(intent);
             }
         });
         holder.itemCardView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -58,7 +64,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        realm.where(ReceiptItemObject.class).contains("image", receipts.get(pos).getImage()).findAll().deleteFirstFromRealm();
+                        realm.where(ReceiptItemObject.class).contains("image", receipts.get(position).getImage()).findAll().deleteFirstFromRealm();
                     }
                 });
                 notifyDataSetChanged();

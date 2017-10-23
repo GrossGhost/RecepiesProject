@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import com.receiptsproject.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+
 
 public class FullPhoto extends AppCompatActivity {
 
@@ -20,8 +22,9 @@ public class FullPhoto extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.full_image);
         Intent intent = getIntent();
-        String img = intent.getStringExtra("photo");
-        Uri uri = Uri.parse(img);
-        Picasso.with(this).load(uri).into(imageView);
+
+        File photo = new File(intent.getStringExtra("photo"));
+
+        Picasso.with(this).load(photo).into(imageView);
     }
 }

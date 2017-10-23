@@ -55,10 +55,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == R.id.action_dropbox) {
-            startActivity(new Intent(getApplicationContext(), DropboxLoginActivity.class));
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

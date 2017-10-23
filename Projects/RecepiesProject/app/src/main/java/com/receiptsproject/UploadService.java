@@ -2,15 +2,17 @@ package com.receiptsproject;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.receiptsproject.util.Consts;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -53,8 +55,10 @@ public class UploadService extends Service {
             folder = "/" + category;
             path = folder + "/" + name + ".jpg";
             // test uri
-            stream = getContentResolver().openInputStream(Uri.parse(uri));
-            size = 1024L;
+            File photo = new File(uri);
+            Log.d("uriFile", uri);
+            stream = new FileInputStream(photo);
+            size = 2048L;
 
         }
 
@@ -63,6 +67,10 @@ public class UploadService extends Service {
         protected String doInBackground(String... strings) {
             try {
                 dropbox.createFolder(folder);
+            } catch (Exception e) {
+                e.printStackTrace();
+           }
+            try {
                 dropbox.upload(path, stream, size, true);
             } catch (Exception e) {
                 isDownloaded = false;
