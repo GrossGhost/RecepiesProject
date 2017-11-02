@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,6 +75,8 @@ public class CategoriesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -82,6 +85,7 @@ public class CategoriesFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 TextView categoryText = view.findViewById(R.id.item_category_title);
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(categoryText.getText().toString());
                 bundle.putString("category", categoryText.getText().toString());
 
                 Fragment receiptsFragment = new ReceiptsFragment();

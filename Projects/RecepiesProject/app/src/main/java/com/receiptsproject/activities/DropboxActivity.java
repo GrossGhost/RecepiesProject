@@ -3,7 +3,6 @@ package com.receiptsproject.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import com.cloudrail.si.CloudRail;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
-import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.util.Consts;
 
 

@@ -27,12 +27,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*File[] files = Environment.getDataDirectory().listFiles();
-
-        for (File f : files){
-            Log.d("FILES", f.getName());
-        }*/
-
         try {
 
             DropboxManager.getInstance().prepare(this);

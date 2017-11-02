@@ -2,7 +2,6 @@ package com.receiptsproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,9 +21,10 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdapter>{
+public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdapter> implements RealmChangeListener{
 
     private Context context;
     private RealmResults<ReceiptItemObject> receipts;
@@ -32,6 +32,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     public ReceiptsAdapter(Context context, RealmResults<ReceiptItemObject> receipts) {
         this.context = context;
         this.receipts = receipts;
+        this.receipts.addChangeListener(this);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, final int position) {
 
         holder.title.setText(receipts.get(position).getTitle());
-        holder.category.setText(receipts.get(position).getCategory());
+        holder.category.setText(receipts.get(position).getShareLink());
         File photo = new File(receipts.get(position).getImage());
         Picasso.with(context).load(photo)
                 .resize(150, 150)
@@ -90,6 +91,11 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     @Override
     public int getItemCount() {
         return receipts.size();
+    }
+
+    @Override
+    public void onChange(Object o) {
+        notifyDataSetChanged();
     }
 
     class MyAdapter extends RecyclerView.ViewHolder {

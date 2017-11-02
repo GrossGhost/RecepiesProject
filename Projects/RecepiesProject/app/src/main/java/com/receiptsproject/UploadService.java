@@ -9,12 +9,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.interfaces.CloudStorage;
+import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.util.Consts;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import io.realm.Realm;
 
 
 public class UploadService extends Service {
@@ -45,20 +48,25 @@ public class UploadService extends Service {
 
         private CloudStorage dropbox;
 
-        private String folder, path;
+        private String folder, path, shareLink;
         private InputStream stream;
         private long size;
+
+        private Realm realm;
+        private ReceiptItemObject item;
 
         Upload(String category, String name, String uri) throws FileNotFoundException {
 
             this.dropbox = DropboxManager.getInstance().getDropbox();
             folder = "/" + category;
             path = folder + "/" + name + ".jpg";
-            // test uri
             File photo = new File(uri);
             Log.d("uriFile", uri);
             stream = new FileInputStream(photo);
             size = 2048L;
+
+            realm = Realm.getDefaultInstance();
+            item = realm.where(ReceiptItemObject.class).equalTo("title", name).equalTo("category", category).findFirst();
 
         }
 
@@ -71,9 +79,14 @@ public class UploadService extends Service {
                 e.printStackTrace();
            }
             try {
-                dropbox.upload(path, stream, size, true);
+                dropbox.upload(path, stream, size, false);
             } catch (Exception e) {
                 isDownloaded = false;
+                e.printStackTrace();
+            }
+            try {
+                shareLink = dropbox.createShareLink(path);
+            }catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -86,6 +99,10 @@ public class UploadService extends Service {
             } else {
                 Toast.makeText(getApplicationContext(), "Uploading Error", Toast.LENGTH_LONG).show();
             }
+
+            realm.beginTransaction();
+            item.setShareLink(shareLink);
+            realm.commitTransaction();
 
             stopSelf();
             super.onPostExecute(s);

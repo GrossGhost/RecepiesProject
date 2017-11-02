@@ -8,6 +8,7 @@ public class ReceiptItemObject extends RealmObject{
     private String title;
     private String category;
     private String image;
+    private String shareLink;
 
     public ReceiptItemObject() {
 
@@ -17,6 +18,7 @@ public class ReceiptItemObject extends RealmObject{
         this.title = title;
         this.category = category;
         this.image = image;
+        this.shareLink = "Not Shared";
     }
 
     public String getTitle() {
@@ -41,5 +43,13 @@ public class ReceiptItemObject extends RealmObject{
 
     public void setImage(Uri image) {
         this.image = image.toString();
+    }
+
+    public String getShareLink() {
+        return shareLink;
+    }
+
+    public void setShareLink(String shareLink) {
+        this.shareLink = shareLink;
     }
 }

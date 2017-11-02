@@ -30,7 +30,7 @@ public class ReceiptsFragment extends Fragment {
     private RealmResults<ReceiptItemObject> data;
     private ReceiptsAdapter adapter;
     private RecyclerView recyclerView;
-    public static int lastItemDeleted;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class ReceiptsFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle!=null){
             category = bundle.getString("category");
+
         }
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.add_new_receipt);
         fab.setOnClickListener(new View.OnClickListener() {

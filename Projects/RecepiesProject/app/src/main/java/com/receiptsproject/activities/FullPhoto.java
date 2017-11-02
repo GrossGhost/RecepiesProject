@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.receiptsproject.R;
 
@@ -18,7 +19,7 @@ public class FullPhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_photo);
 
-        ImageView imageView = (ImageView)findViewById(R.id.full_image);
+        PhotoView imageView = (PhotoView)findViewById(R.id.full_image);
 
         File photo = new File(getIntent().getStringExtra("photo"));
 
