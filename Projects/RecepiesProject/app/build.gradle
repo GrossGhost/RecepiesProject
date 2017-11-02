@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.recepiesproject"
         minSdkVersion 16
@@ -31,6 +31,7 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:cardview-v7:26.+'
-    compile 'com.cloudrail:cloudrail-si-android:2.8.2'
+    compile 'com.cloudrail:cloudrail-si-android:2.21.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     testCompile 'junit:junit:4.12'
 }

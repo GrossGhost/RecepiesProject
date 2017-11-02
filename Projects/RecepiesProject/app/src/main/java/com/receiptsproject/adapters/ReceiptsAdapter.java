@@ -54,7 +54,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
             public void onClick(View view) {
                 Intent intent = new Intent(context, FullPhoto.class);
                 intent.putExtra("photo", receipts.get(position).getImage());
-                //context.startActivity(intent);
+                context.startActivity(intent);
             }
         });
         holder.itemCardView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -92,19 +92,19 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
         return receipts.size();
     }
 
-    public class MyAdapter extends RecyclerView.ViewHolder {
+    class MyAdapter extends RecyclerView.ViewHolder {
         private ImageView photo;
         private TextView title;
         private TextView category;
         private CardView itemCardView;
         private ImageButton uploadButton;
-        public MyAdapter(View itemView) {
+        MyAdapter(View itemView) {
             super(itemView);
 
-            photo = (ImageView)itemView.findViewById(R.id.item_photo);
-            title = (TextView)itemView.findViewById(R.id.item_title);
-            category = (TextView)itemView.findViewById(R.id.item_category);
-            itemCardView = (CardView)itemView.findViewById(R.id.receipt_card_view);
+            photo = itemView.findViewById(R.id.item_photo);
+            title = itemView.findViewById(R.id.item_title);
+            category = itemView.findViewById(R.id.item_category);
+            itemCardView = itemView.findViewById(R.id.receipt_card_view);
             uploadButton = itemView.findViewById(R.id.button_upload);
         }
     }

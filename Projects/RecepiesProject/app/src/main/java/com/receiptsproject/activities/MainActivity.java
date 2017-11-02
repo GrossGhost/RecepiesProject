@@ -2,15 +2,20 @@ package com.receiptsproject.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.cloudrail.si.CloudRail;
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +27,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*File[] files = Environment.getDataDirectory().listFiles();
+
+        for (File f : files){
+            Log.d("FILES", f.getName());
+        }*/
+
         try {
+
             DropboxManager.getInstance().prepare(this);
         }catch (Exception e){
             Toast.makeText(this, "Cant login to dropbox", Toast.LENGTH_LONG).show();
@@ -52,8 +64,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_settings) {
             return true;
+        }
+        if (id == R.id.menu_dropbox) {
+            startActivity(new Intent(this, DropboxActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -62,5 +77,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onStop() {
+        DropboxManager.getInstance().storePersistent();
+        super.onStop();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if(intent.getCategories().contains("android.intent.category.BROWSABLE")) {
+            CloudRail.setAuthenticationResponse(intent);
+        }
+        super.onNewIntent(intent);
     }
 }

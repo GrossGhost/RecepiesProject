@@ -6,10 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-feature
-        android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:name=".BillsApp"
@@ -48,24 +47,28 @@
         </activity>
         <activity android:name=".activities.SettingsPasswords" />
         <activity android:name=".activities.AddReceiptActivity" />
-        <activity android:name=".activities.FullPhoto"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.FullPhoto"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name=".UploadService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths"/>
+                android:resource="@xml/filepaths" />
         </provider>
+
+        <activity
+            android:name=".activities.DropboxActivity"
+            android:label="Dropbox" />
     </application>
 
 </manifest>
