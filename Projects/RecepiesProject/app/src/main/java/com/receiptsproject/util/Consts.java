@@ -36,4 +36,8 @@ public class Consts {
     public static final String CATEGORY = "category";
     public static final String NAME = "name";
     public static final String URI = "uri";
+    public static final String URL_SHORTENER_API_KEY = "AIzaSyCe2rrN892Mpw3JEFMjOKV0MbCTT9iE9rc";
+    public static final String GOOGLE_SHORTENER_URL = "https://www.googleapis.com";
+
+
 }

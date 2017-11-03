@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class ReceiptsFragment extends Fragment {
 
     private final String TAG = "ReceiptsFragment/";
     private Context context;
-    private String category;
+    private String category = "";
     private Realm realm;
     private RealmResults<ReceiptItemObject> data;
     private ReceiptsAdapter adapter;
@@ -49,6 +50,7 @@ public class ReceiptsFragment extends Fragment {
             category = bundle.getString("category");
 
         }
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(category);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.add_new_receipt);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -44,7 +44,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, final int position) {
 
         holder.title.setText(receipts.get(position).getTitle());
-        holder.category.setText(receipts.get(position).getShareLink());
+        holder.category.setText(receipts.get(position).getShorterId());
         File photo = new File(receipts.get(position).getImage());
         Picasso.with(context).load(photo)
                 .resize(150, 150)

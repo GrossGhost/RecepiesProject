@@ -85,7 +85,7 @@ public class CategoriesFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 TextView categoryText = view.findViewById(R.id.item_category_title);
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(categoryText.getText().toString());
+
                 bundle.putString("category", categoryText.getText().toString());
 
                 Fragment receiptsFragment = new ReceiptsFragment();

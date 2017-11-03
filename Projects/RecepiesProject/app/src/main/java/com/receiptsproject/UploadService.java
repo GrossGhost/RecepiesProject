@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.receiptsproject.objects.ReceiptItemObject;
+import com.receiptsproject.retrofit.RestManager;
+import com.receiptsproject.retrofit.ShortenerBody;
+import com.receiptsproject.retrofit.ShortenerResponse;
 import com.receiptsproject.util.Consts;
 
 import java.io.File;
@@ -18,6 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class UploadService extends Service {
@@ -48,7 +54,7 @@ public class UploadService extends Service {
 
         private CloudStorage dropbox;
 
-        private String folder, path, shareLink;
+        private String folder, path, shareLink, shorterLink;
         private InputStream stream;
         private long size;
 
@@ -58,7 +64,7 @@ public class UploadService extends Service {
         Upload(String category, String name, String uri) throws FileNotFoundException {
 
             this.dropbox = DropboxManager.getInstance().getDropbox();
-            folder = "/" + category;
+            folder = "/BillsApp/" + category;
             path = folder + "/" + name + ".jpg";
             File photo = new File(uri);
             Log.d("uriFile", uri);
@@ -74,10 +80,15 @@ public class UploadService extends Service {
         @Override
         protected String doInBackground(String... strings) {
             try {
+                dropbox.createFolder("/BillsApp");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
                 dropbox.createFolder(folder);
             } catch (Exception e) {
                 e.printStackTrace();
-           }
+            }
             try {
                 dropbox.upload(path, stream, size, false);
             } catch (Exception e) {
@@ -86,10 +97,35 @@ public class UploadService extends Service {
             }
             try {
                 shareLink = dropbox.createShareLink(path);
+                createShorterLink(shareLink);
             }catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
+        }
+
+        private void createShorterLink(String longLink) {
+
+            ShortenerBody body = new ShortenerBody();
+            body.setLongUrl(longLink);
+
+            Call<ShortenerResponse> call = RestManager.getApiService().registerUser(body, Consts.URL_SHORTENER_API_KEY);
+            call.enqueue(new Callback<ShortenerResponse>() {
+                @Override
+                public void onResponse(Call<ShortenerResponse> call, Response<ShortenerResponse> response) {
+
+                    if (response.isSuccessful()) {
+                        realm.beginTransaction();
+                        item.setShorterLink(response.body().getId());
+                        realm.commitTransaction();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ShortenerResponse> call, Throwable t) {
+
+                }
+            });
         }
 
         @Override
@@ -99,10 +135,6 @@ public class UploadService extends Service {
             } else {
                 Toast.makeText(getApplicationContext(), "Uploading Error", Toast.LENGTH_LONG).show();
             }
-
-            realm.beginTransaction();
-            item.setShareLink(shareLink);
-            realm.commitTransaction();
 
             stopSelf();
             super.onPostExecute(s);
