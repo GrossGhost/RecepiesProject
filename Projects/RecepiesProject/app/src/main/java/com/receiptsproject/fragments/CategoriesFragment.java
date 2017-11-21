@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,15 +43,17 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         realm = Realm.getDefaultInstance();
+        
         dialogFragment = new AddCategoriesDialog();
-        data = realm.where(CategoriesData.class).findAll().sort("name");
+        data = realm.where(CategoriesData.class).findAll();
         checkRealmData();
-        adapter = new CategoriesAdapter(data);
+        adapter = new CategoriesAdapter(getActivity(), data);
     }
 
     private void checkRealmData() {
-        if (data.size() == 0 || ! data.get(0).getName().equals(Consts.CATEGORIES_LIST.get(0)) ){
+        if (data.size() == 0 || checkBasicCategories() ){
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
@@ -61,6 +65,17 @@ public class CategoriesFragment extends Fragment {
                 realm.commitTransaction();
             }
         }
+    }
+
+    private boolean checkBasicCategories() {
+        int i = 0;
+        for (String category : Consts.CATEGORIES_LIST){
+            if (!category.equals(data.get(i).getName())){
+                return true;
+            }
+            i++;
+        }
+        return false;
     }
 
     @Nullable
@@ -77,7 +92,14 @@ public class CategoriesFragment extends Fragment {
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        GridLayoutManager gridLayoutManager;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        } else {
+            gridLayoutManager = new GridLayoutManager(getActivity(), 5);
+        }
+
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override

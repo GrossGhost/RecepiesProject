@@ -23,7 +23,7 @@ public class Consts {
 
     //For Categories
     public static final ArrayList<String> CATEGORIES_LIST = new ArrayList<>(Arrays.asList(
-            "Documents","Electronic items","Grocery bills","Restaurant bills"));
+            "Documents","Grocery","Electronics","Restaurants","Others"));
 
     //For DropBox
     public static final String APP_KEY_DROPBOX = "5g4xzheb9woqp1x";

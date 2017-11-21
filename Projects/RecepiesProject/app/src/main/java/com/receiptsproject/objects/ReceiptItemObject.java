@@ -2,6 +2,10 @@ package com.receiptsproject.objects;
 
 import android.net.Uri;
 
+import io.realm.DynamicRealm;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 import io.realm.RealmObject;
 
 public class ReceiptItemObject extends RealmObject{
@@ -9,7 +13,6 @@ public class ReceiptItemObject extends RealmObject{
     private String category;
     private String image;
     private String shorterLink;
-
 
     public ReceiptItemObject() {
 
