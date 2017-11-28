@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.cloudrail.si.CloudRail;
+import com.google.firebase.crash.FirebaseCrash;
 import com.receiptsproject.DropboxManager;
 import com.receiptsproject.R;
 import com.receiptsproject.fragments.CategoriesFragment;
@@ -20,8 +21,10 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
