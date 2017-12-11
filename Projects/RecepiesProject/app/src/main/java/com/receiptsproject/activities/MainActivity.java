@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+        //FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

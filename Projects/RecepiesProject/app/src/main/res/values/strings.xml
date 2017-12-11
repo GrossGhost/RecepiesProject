@@ -12,4 +12,7 @@
     <string name="logged_in_as">logged in as </string>
     <string name="dropbox">Dropbox</string>
     <string name="conti_nue">Continue</string>
+    <string name="code_info">Visit: www.goo.gl/%1s to download and print.\n\nRecommend : "If you are using a link on a public computer, make sure you clear the browsing history for your safety."</string>
+    <string name="not_shared_info">This image not shared yet.\nPress upload button to upload image.</string>
+    <string name="ok">Ok</string>
 </resources>

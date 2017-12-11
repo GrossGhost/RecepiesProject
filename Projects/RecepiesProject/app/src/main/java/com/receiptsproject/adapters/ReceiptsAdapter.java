@@ -2,6 +2,8 @@ package com.receiptsproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.receiptsproject.R;
 import com.receiptsproject.UploadService;
 import com.receiptsproject.activities.FullPhoto;
+import com.receiptsproject.dialogs.CodeInfoDialog;
 import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.util.Consts;
 import com.squareup.picasso.Picasso;
@@ -27,10 +30,12 @@ import io.realm.RealmResults;
 public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdapter> implements RealmChangeListener{
 
     private Context context;
+    private FragmentManager fm;
     private RealmResults<ReceiptItemObject> receipts;
 
-    public ReceiptsAdapter(Context context, RealmResults<ReceiptItemObject> receipts) {
+    public ReceiptsAdapter(Context context, FragmentManager fm, RealmResults<ReceiptItemObject> receipts) {
         this.context = context;
+        this.fm = fm;
         this.receipts = receipts;
         this.receipts.addChangeListener(this);
     }
@@ -41,8 +46,9 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
     }
 
     @Override
-    public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, final int position) {
+    public void onBindViewHolder(ReceiptsAdapter.MyAdapter holder, int position) {
 
+        final int pos = position;
         holder.title.setText(receipts.get(position).getTitle());
         holder.category.setText(receipts.get(position).getShorterId());
         File photo = new File(receipts.get(position).getImage());
@@ -54,7 +60,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FullPhoto.class);
-                intent.putExtra("photo", receipts.get(position).getImage());
+                intent.putExtra("photo", receipts.get(pos).getImage());
                 context.startActivity(intent);
             }
         });
@@ -65,7 +71,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        realm.where(ReceiptItemObject.class).contains("image", receipts.get(position).getImage()).findAll().deleteFirstFromRealm();
+                        realm.where(ReceiptItemObject.class).contains("image", receipts.get(pos).getImage()).findAll().deleteFirstFromRealm();
                     }
                 });
                 notifyDataSetChanged();
@@ -78,11 +84,22 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
             public void onClick(View view) {
 
                 Intent uploadServiceIntent = new Intent(context, UploadService.class);
-                uploadServiceIntent.putExtra(Consts.CATEGORY, receipts.get(position).getCategory());
-                uploadServiceIntent.putExtra(Consts.NAME, receipts.get(position).getTitle());
-                uploadServiceIntent.putExtra(Consts.URI, receipts.get(position).getImage());
+                uploadServiceIntent.putExtra(Consts.CATEGORY, receipts.get(pos).getCategory());
+                uploadServiceIntent.putExtra(Consts.NAME, receipts.get(pos).getTitle());
+                uploadServiceIntent.putExtra(Consts.URI, receipts.get(pos).getImage());
 
                 context.startService(uploadServiceIntent);
+            }
+        });
+
+        holder.infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CodeInfoDialog infoDialog = new CodeInfoDialog();
+                Bundle args = new Bundle();
+                args.putString("code", receipts.get(pos).getShorterId());
+                infoDialog.setArguments(args);
+                infoDialog.show(fm,"");
             }
         });
 
@@ -104,6 +121,8 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
         private TextView category;
         private CardView itemCardView;
         private ImageButton uploadButton;
+        private ImageButton infoButton;
+
         MyAdapter(View itemView) {
             super(itemView);
 
@@ -112,6 +131,7 @@ public class ReceiptsAdapter extends RecyclerView.Adapter<ReceiptsAdapter.MyAdap
             category = itemView.findViewById(R.id.item_category);
             itemCardView = itemView.findViewById(R.id.receipt_card_view);
             uploadButton = itemView.findViewById(R.id.button_upload);
+            infoButton = itemView.findViewById(R.id.button_code_info);
         }
     }
 }

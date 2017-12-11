@@ -64,7 +64,7 @@ public class ReceiptsFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.receipts_recycler);
         realm = Realm.getDefaultInstance();
         data = realm.where(ReceiptItemObject.class).equalTo("category", category).findAll();
-        adapter = new ReceiptsAdapter(context, data);
+        adapter = new ReceiptsAdapter(context,((AppCompatActivity) getActivity()).getSupportFragmentManager(), data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -75,7 +75,7 @@ public class ReceiptsFragment extends Fragment {
         super.onResume();
 
         data = realm.where(ReceiptItemObject.class).equalTo("category", category).findAll();
-        adapter = new ReceiptsAdapter(context, data);
+        adapter = new ReceiptsAdapter(context,((AppCompatActivity) getActivity()).getSupportFragmentManager(),data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
