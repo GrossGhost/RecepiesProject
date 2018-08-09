@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cloudrail.si.interfaces.CloudStorage;
+import com.google.firebase.crash.FirebaseCrash;
 import com.receiptsproject.objects.ReceiptItemObject;
 import com.receiptsproject.retrofit.RestManager;
 import com.receiptsproject.retrofit.ShortenerBody;
@@ -117,6 +118,7 @@ public class UploadService extends Service {
                     if (response.isSuccessful()) {
                         realm.beginTransaction();
                         item.setShorterLink(response.body().getId());
+                        FirebaseCrash.report(new Exception(response.body().getId()));
                         realm.commitTransaction();
                     }
                 }
@@ -131,6 +133,7 @@ public class UploadService extends Service {
         @Override
         protected void onPostExecute(String s) {
             if (isDownloaded) {
+
                 Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Uploading Error", Toast.LENGTH_LONG).show();
